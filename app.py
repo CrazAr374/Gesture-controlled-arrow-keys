@@ -6,13 +6,10 @@ import time
 
 class GestureKeyboardController:
     def __init__(self):
-        # Performance settings
         self.process_every_n_frames = 2  # Only process every nth frame
         self.frame_counter = 0
         self.reduced_resolution = True  # Process frames at lower resolution
         self.resolution_scale = 0.5  # Scale factor for resolution reduction
-        
-        # Initialize MediaPipe Hands with optimized settings
         self.mp_hands = mp.solutions.hands
         self.hands = self.mp_hands.Hands(
             static_image_mode=False,
@@ -23,21 +20,13 @@ class GestureKeyboardController:
         )
         self.mp_drawing = mp.solutions.drawing_utils
         self.mp_drawing_styles = mp.solutions.drawing_styles
-        
-        # Initialize webcam with optimized resolution
         self.cap = cv2.VideoCapture(0)
-        
-        # Screen dimensions
         self.screen_width = int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH))
         self.screen_height = int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-        
-        # Region boundaries (percentages of screen)
         self.left_boundary = 0.3
         self.right_boundary = 0.7
         self.top_boundary = 0.3
         self.bottom_boundary = 0.7
-        
-        # Key mapping
         self.key_mapping = {
             "left": "left",
             "right": "right",
@@ -185,7 +174,6 @@ class GestureKeyboardController:
         cv2.line(frame, (int(w * 0.45), int(h * self.top_boundary)), (int(w * 0.55), int(h * self.top_boundary)), (0, 255, 0), 2)
         cv2.line(frame, (int(w * 0.45), int(h * self.bottom_boundary)), (int(w * 0.55), int(h * self.bottom_boundary)), (0, 255, 0), 2)
         
-        # Simplified labels - only draw when in calibration mode
         if self.calibration_mode:
             cv2.putText(frame, "L", (int(w * 0.15), int(h * 0.5)), self.font, self.font_scale, self.text_color, self.font_thickness)
             cv2.putText(frame, "R", (int(w * 0.85), int(h * 0.5)), self.font, self.font_scale, self.text_color, self.font_thickness)
